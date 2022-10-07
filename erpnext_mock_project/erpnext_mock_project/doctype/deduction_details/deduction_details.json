@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-10-01 22:44:47.011427",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "deduction_name",
+  "deduction_type",
+  "start_date",
+  "end_date",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "deduction_name",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Deduction Name",
+   "options": "\nTraffic Voilation\nRetention\nPunishment"
+  },
+  {
+   "fieldname": "deduction_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Deduction Type",
+   "options": "\nOnetime\nRecurring"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "End Date",
+   "read_only_depends_on": "eval:frappe.session.deduction_type =='Onetime'"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-10-06 13:33:21.445646",
+ "modified_by": "Administrator",
+ "module": "erpnext_mock_project",
+ "name": "Deduction Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -95,13 +95,16 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
+#doc_events = {
+	#"Employee Deduction":{
+	#	"before_save" :"erpnext_mock_project.erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.total"
+	# }
 #	"*": {
 #		"on_update": "method",
 #		"on_cancel": "method",
 #		"on_trash": "method"
 #	}
-# }
+#}
 
 # Scheduled Tasks
 # ---------------
