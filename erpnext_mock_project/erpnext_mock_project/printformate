@@ -1,0 +1,121 @@
+<html>
+    <head></head>
+    <body>
+        <table border='2px' width=100%>
+            <tbody>               
+            <tr>
+                <td width=25%><b>IRN:</b><small> 
+                {% if doc.irn!=None %}
+                {{ doc.irn }}
+                {%endif%}</small><br>
+               <b>E-Way Bill No:</b><small>
+                {% if doc.ewaybill!=None%}
+                {{ doc.ewaybill }}
+                {%endif%}</small>
+                </td>
+                <td width=40%><b>Invoice Date:</b><small>{{doc.posting_date}}</small><br>
+                <b>Transporter:</b><small>
+                {% if doc.transporter!=None%}
+                {{ doc.transporter }}
+                {%endif%}</small><br>
+                <b>Type Of Payment:</b><small></small><br>
+                <b>Type Of Booking:</b><small></small><br>
+                <b>Destination:</b><small>
+                 {% if doc.set_target_warehouse!=None%}
+                {{ doc.set_target_warehouse }}
+                {%endif%}
+                </small><br>
+                <b>Place Of Supply:</b><small>
+                {% if doc.place_of_supply!=None %}
+                {{ doc.place_of_supply }}
+                {%endif%}
+                </small><br>
+                <b>Total Net Weight:</b><small>
+                 {% if doc.total_net_weight!=None %}
+                {{ doc.total_net_weight }}
+                {%endif%}
+                </small><br>
+                </td>
+                
+                <td width=35%>
+                    <!--{{doc.barcode}}-->
+                </td>
+            
+            </tr>
+            <tr>
+                <td colspan="3"><b>Our Bank Account :</b></td>
+            </tr>
+            <tr>
+                <th>Billed To</th>
+                <th>Shipped To</th>
+                <th>Other Details</th>
+            </tr>
+            <tr>
+                <td><b>Name:</b><small>
+                {% if doc.contact_person!=None %}
+                {{ doc.contact_person }}
+                {%endif%}
+                </small><br>
+                <b>Address:</b><small>
+                {% if doc.address_display!=None %}
+                {{ doc.address_display }}
+                {%endif%}
+                </small><br>
+                <b>GSTIN:</b><small>
+                {% if doc.company_gstin!=None %}
+                {{ doc.company_gstin }}
+                {%endif%}
+                </small><br>
+                <b>State & Code:</b>
+                </td>
+                <td><b>Name:</b><small>
+                {% if doc.contact_person!=None %}
+                {{ doc.contact_person }}
+                {%endif%}
+                </small><br>
+                <b>Address:</b><small>
+                 {% if doc.address_display!=None %}
+                {{ doc.address_display }}
+                {%endif%}
+                </small><br>
+                <b>GSTIN:</b><small>
+                 {% if doc.company_gstin!=None %}
+                {{ doc.company_gstin }}
+                {%endif%}    
+                </small><br>
+                <b>State & Code:</b></td>
+                <td><b>Customer PO No:</b><small>
+                {% if doc.po_no!=None %}
+                {{ doc.po_no }}
+                {%endif%}
+                </small><br>
+                <b>Customer PO Date:</b><small>
+                {% if doc.po_date!=None %}
+                {{ doc.po_date }}
+                {%endif%}
+                </small><br>
+                <b>Contact Name:</b><small>
+                {% if doc.contact_display!=None %}
+                {{ doc.contact_display }}
+                {%endif%}
+                </small><br>
+                <b>Contact No:</b><small>
+                {% if doc.contact_mobile!=None %}
+                {{ doc.contact_mobile }}
+                {%endif%}
+                </small><br>
+                <b>Payment Term:</b><small>
+                {% if doc.payment_schedule!=None %}
+                {{ doc.payment_schedule }}
+                {%endif%}
+                </small><br>
+                <b>SO Number:</b><small></small>
+                </td>
+                
+                
+            </tr>
+            </tbody>
+            
+        </table>
+    </body>
+</html>
