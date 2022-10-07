@@ -1,0 +1,50 @@
+<style>
+.containe{
+    display : flex;
+    height:top;
+    align-items: center;
+}
+.containe img{
+    width:120;
+    margin-right:10px;
+}
+
+</style>
+<h1><center>{{doc.company}}</center></h1>
+<hr>
+<div class="containe" style="text-align: left;">
+<img alt="Promantia" height="50" src="/private/files/Prona.png">
+<p>Email:<small>
+{% if doc.email!=None %}
+{{ doc.email }}
+{%endif%}</small>
+Phone:<small>
+{% if doc.phone_no!=None %}
+{{ doc.phone_no }}
+{%endif%}
+</small>
+<br>CIN:<small>
+{% if doc.cin!=None %}
+{{ doc.cin }}
+{%endif%}
+</small>PAN:<small>
+{% if doc.pan!=None %}
+{{ doc.pan }}
+{%endif%}
+</small><br>
+GST:<small></small>
+{% if doc.gst!=None %}
+{{ doc.gst }}
+{%endif%}<br>
+Website:<small>
+{% if doc.website!=None %}
+{{ doc.website }}
+{%endif%}</small>
+</p>
+<hr>
+<p>Branch:</p><small>
+{% if doc.branch!=None %}
+{{ doc.branch }}
+{%endif%}</small>
+</div>
+
