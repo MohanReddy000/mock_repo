@@ -84,44 +84,14 @@ frappe.ui.form.on('Deduction Details', {
 					 "start_date": d.start_date
 				},
 				"callback": function(response) {
-					for( var i=0;i<frm.doc.deduction_calculation.length;i++){
-					if (response.message == frm.doc.deduction_calculation[i]['month']){
-						//cur_frm.clear_table("deduction_calculation")
-
-					}
-					else{
+					if(response.message){
 						child.month=response.message
-						//month+=[response.message]
+					
 					}
-				}
-					
-					console.log(month);
-					//for (var i=0;i<frm.doc.deduction_calculation.lenght;i++){
-
-					//}
-					/*frappe.call({
-						"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.month_list",
-						"args": {
-							 "b":response.message
-						},
-						"callback": function(r){
-							if(r.message){
-								if (!(response.message in r.message[0])){
-									child.month=response.message
-								}
-								else{
-									child.month=response.message
-
-								}
-							
-							}
-							}
-					});*/
-					
 					frm.refresh_field("deduction_calculation");
 				}
+					
 			});
-		}
 		}
 		else{
 			var start_date= new Date(d.start_date)
@@ -164,7 +134,7 @@ frappe.ui.form.on('Deduction Details', {
 			});
 
 		}
-		
+	}
 		
 	}
 });  
