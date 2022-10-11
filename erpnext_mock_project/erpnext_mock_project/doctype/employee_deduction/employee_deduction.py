@@ -13,3 +13,10 @@ def convertDateFormat(start_date):
     start_date=str(start_date)
     date=datetime.datetime.strptime(start_date, '%Y-%m-%d')
     return date.strftime('%b-%y')
+@frappe.whitelist()        
+def month_list(b):
+    
+    l=[]
+    l.append(b)
+        
+    return l

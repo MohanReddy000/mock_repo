@@ -158,7 +158,14 @@ def get_report_summary(data):
 	present_days = sum([project.present_days for project in data])
 	absent_days=sum([project.absent_days for project in data])
 	halfdays_days=sum([project.halfdays_days for project in data])
+	total=present_days+absent_days+halfdays_days
 	return [
+		{
+			"value": total,
+			"indicator": "Blue",
+			"label": "Total Days",
+			"datatype": "Int",
+		},
 		{
 			"value": present_days,
 			"indicator": "Green",
@@ -173,8 +180,9 @@ def get_report_summary(data):
 		},
 		{
 			"value": halfdays_days,
-			"indicator": "Blue",
+			"indicator": "#db6927",
 			"label": "Halfdays Days",
 			"datatype": "Int",
-		}
+		},
+		
 	]

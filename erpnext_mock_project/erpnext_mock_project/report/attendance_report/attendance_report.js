@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 /* eslint-disable */
 
-frappe.query_reports["Timesheet Report"] = {
+frappe.query_reports["Attendance Report"] = {
 	"filters": [
 		{
 			"fieldname":"from_date",
@@ -36,6 +36,7 @@ frappe.query_reports["Timesheet Report"] = {
 			"width": "80",
 			"reqd": 0
 		},
+
 
 	]
 };

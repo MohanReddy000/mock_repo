@@ -9,6 +9,28 @@ app_color = "grey"
 app_email = "mohan@gmail.com"
 app_license = "MIT"
 
+fixtures=[
+{
+"dt": "Print Format",
+        "filters": [
+         [
+             "name", "in", [
+				"Erpnext_mock_project"
+	]
+]
+]
+},
+{
+'''"dt": "Property Setter",
+        "filters": [
+         [
+             "name", "in", [
+]
+]
+]'''
+},
+]
+
 # Includes in <head>
 # ------------------
 
