@@ -8,6 +8,8 @@ import datetime
 def deduction(name):
     data = frappe.db.sql(""" select DISTINCT employee_name from `tabEmployee` where name=%s """,(name),as_dict=1)
     return data
+
+
 @frappe.whitelist()
 def convertDateFormat(start_date):
     start_date=str(start_date)
