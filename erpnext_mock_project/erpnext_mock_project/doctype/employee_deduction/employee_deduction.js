@@ -9,7 +9,6 @@ frappe.ui.form.on('Employee Deduction', {
 				 "name": frm.doc.employee
 			},
 			"callback": function(response) {
-				
 				 var employee = response.message;
 				 console.log(employee)
 				 if (employee) {
@@ -20,30 +19,69 @@ frappe.ui.form.on('Employee Deduction', {
 				}
 			}
 		}); 
+	},
+	validate:function(frm){
+		if (frappe.db.exists('Employee Deduction',frm.doc.employee_name)){
+			frappe.throw("Employee Aldredy Exists..")
+		}
 	}
-	
-
-
 });
 frappe.ui.form.on('Deduction Calculation', {
 	actualpaid_amount:function(frm,cdt,cdn){
 		var d = locals[cdt][cdn];
 		frappe.model.set_value(cdt, cdn, 'total', (d.onetime + d.recurring));
 		frappe.model.set_value(cdt, cdn, 'balance', (d.total - d.actualpaid_amount));
-		console.log(d.actualpaid_amount)
-		if (d.month == 'Oct-22'){
-			frappe.model.set_value(cdt, cdn, 'current_month_balance',d.balance);
-		}
 		frm.refresh_field("balance");
-
-	},
-
-	/*refresh:function(frm,cdt,cdn){
-		var d = locals[cdt][cdn];
-		frappe.model.set_value(cdt, cdn, 'total', (d.onetime + d.recurring));
-		frm.refresh()
-	}*/
-
+		var Date=frappe.datetime.get_today()
+		frappe.call({
+			"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.convertDateFormat",
+			"args": {
+				 "start_date": Date
+			},
+			"callback": function(response) {
+				 var msg= response.message;
+				 for (var i=0;i<frm.doc.deduction_calculation.length;i++){
+				 if (frm.doc.deduction_calculation[i]['month']===msg) {
+					  frm.set_value('current_month_balance',frm.doc.deduction_calculation[i]['balance']);
+				 } 
+			}
+			frm.refresh_field("balance");
+			}
+		}); 
+		frappe.call({
+			"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.convertDateFormat",
+			"args": {
+				 "start_date": Date
+			},
+			"callback": function(response) {
+				 var msg= response.message;
+				 for (var i=0;i<frm.doc.deduction_calculation.length;i++){
+				 if (frm.doc.deduction_calculation[i]['month']===msg) {
+					  frm.set_value('current_month_balance',frm.doc.deduction_calculation[i]['balance']);
+				 } 
+			}
+			frm.refresh_field("balance");
+			}
+		}); 
+		var sum=0;
+		$.each(frm.doc.deduction_calculation,function(idx, row){			
+			var Date1=frm.doc.deduction_calculation[idx]['month']
+		frappe.call({
+			"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.till_month",
+			"args": {
+				 "month":Date1
+			},
+			"callback": function(response) {
+				 var mseg= response.message;
+				 if (mseg=="True") {
+					sum=sum+frm.doc.deduction_calculation[idx]['balance']
+					frm.set_value('total_balance',sum);
+				 }
+			frm.refresh_field("balance");
+			}
+		}); 
+	})
+}
 });
 frappe.ui.form.on('Deduction Details', {
 	end_date:function(frm,cdt,cdn){
@@ -52,8 +90,6 @@ frappe.ui.form.on('Deduction Details', {
 			frappe.msgprint("End date should be greater than Start date...")
 			frm.refresh_field("end_date");
 			}
-			//cur_frm.clear_field("end_date")
-	
 	},
 	deduction_type:function(frm,cdt,cdn){
 		var d= locals[cdt][cdn];
@@ -61,12 +97,11 @@ frappe.ui.form.on('Deduction Details', {
 			console.log(d.deduction_type);
 			frappe.model.set_value(cdt,cdn,'end_date',frappe.datetime.month_end(d.start_date));
 			frappe.model.set_value(cdt,cdn,'start_date',frappe.datetime.month_start(d.start_date));
-		  	//frm.set_df_property('end_date',"read_only",1);
-			//frappe.model.set_df_property("end_date", "read_only",frm.doc.deduction_type=="Onetime");
 		}
 	 },
 	 amount:function(frm,cdt,cdn){
-		var month=[];
+		var month_list=[];
+		console.log(frm.doc.amount)
 		var d= locals[cdt][cdn];
 		if (d.amount == 0 ){
 			frappe.throw("Amount should be greater than 0(ZERO)");
@@ -74,9 +109,6 @@ frappe.ui.form.on('Deduction Details', {
 		}
 		if (d.amount > 0){
 		if (d.deduction_type == 'Onetime'){
-			
-			var child = cur_frm.add_child("deduction_calculation");
-			child.onetime=d.amount
 			frm.refresh_field("deduction_calculation");
 			frappe.call({
 				"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.convertDateFormat",
@@ -84,57 +116,81 @@ frappe.ui.form.on('Deduction Details', {
 					 "start_date": d.start_date
 				},
 				"callback": function(response) {
-					if(response.message){
-						child.month=response.message
-					
+				
+					if (!(month_list.includes(response.message))){
+						$.each(frm.doc.deduction_calculation,function(idx, row){
+							month_list.push(frm.doc.deduction_calculation[idx]['month'])
+						});
+						if (!(month_list.includes(response.message))){
+							var child = cur_frm.add_child("deduction_calculation");
+							child.month=response.message
+							child.onetime=d.amount
+							child.total=d.amount
+							child.balance=d.amount
+						}
+						else{
+							$.each(frm.doc.deduction_calculation,function(idx, row){
+								if (month_list.includes(response.message) && response.message==frm.doc.deduction_calculation[idx]['month']){
+									frm.doc.deduction_calculation[idx]['onetime']=frm.doc.deduction_calculation[idx]['onetime']+d.amount;
+									frm.doc.deduction_calculation[idx]['total']=frm.doc.deduction_calculation[idx]['total']+d.amount;
+									frm.doc.deduction_calculation[idx]['balance']=frm.doc.deduction_calculation[idx]['total'];
+
+
+								}
+								
+							});
 					}
-					frm.refresh_field("deduction_calculation");
 				}
-					
+				frm.refresh_field("deduction_calculation");
+				}
 			});
 		}
 		else{
-			var start_date= new Date(d.start_date)
-			var end_date=new Date(d.end_date)
-			var numberOfMonths = (end_date.getFullYear() - start_date.getFullYear()) * 12 + (end_date.getMonth() - start_date.getMonth()) + 1;	
-
-			frappe.call({
-				"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.convertDateFormat",
-				"args": {
-					 "start_date": d.start_date
-				},
-				"callback": function(response) {
-					 var convert_date
-					 var convert = response.message;
-					 if (convert) {
-						for(var row=0;row<numberOfMonths;row++){
-					convert_date=(frappe.datetime.add_months(d.start_date,(row+1)-1))
-					frappe.call({
+			var start_date= new Date(d.start_date);
+			var end_date=new Date(d.end_date);
+			var numberOfMonths = (end_date.getFullYear() - start_date.getFullYear()) * 12 + (end_date.getMonth() - start_date.getMonth()) + 1;
+			var convert_date;
+			for(var row1=0;row1<numberOfMonths;row1++){
+				convert_date=(frappe.datetime.add_months(d.start_date,row1))
+				console.log(frappe.datetime.add_months(d.start_date,(row1)))
+				frappe.call({
 						"method": "erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.convertDateFormat",
 						"args": {
 							 "start_date": convert_date
 						},
+						async:false,
 						"callback": function(response) {
 							 var con= response.message;
-							 if (con){
-								var child = cur_frm.add_child("deduction_calculation");
-								child.month=con
-								
-								//console.log(con)
-								child.recurring= (d.amount)/(numberOfMonths)
-							 }
+							 if (!(month_list.includes(con))){
+								$.each(frm.doc.deduction_calculation,function(idx, row){
+									month_list.push(frm.doc.deduction_calculation[idx]['month'])
+								});
+								if (!(month_list.includes(con))){
+										var child = cur_frm.add_child("deduction_calculation");
+										child.month=con
+										child.recurring= (d.amount)/(numberOfMonths)
+										child.total=(d.amount)/(numberOfMonths)
+										child.balance=(d.amount)/(numberOfMonths)
+								}
+								else{
+									$.each(frm.doc.deduction_calculation,function(idx, row){
+										
+										if (response.message==frm.doc.deduction_calculation[idx]['month']){
+											frm.doc.deduction_calculation[idx]['recurring']=frm.doc.deduction_calculation[idx]['recurring']+(d.amount)/(numberOfMonths);
+											frm.doc.deduction_calculation[idx]['total']=frm.doc.deduction_calculation[idx]['total']+(d.amount)/(numberOfMonths);
+											frm.doc.deduction_calculation[idx]['balance']=frm.doc.deduction_calculation[idx]['total'];
+
+										}
+								});
+							}
+						}		 
 					frm.refresh_field("deduction_calculation");
 						}
 					 });
 					
 					}//forloop end
-
-				}
-				}
-			});
-
+				
 		}
-	}
-		
+	}	
 	}
 });  
