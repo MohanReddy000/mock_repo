@@ -25,19 +25,19 @@ def get_columns():
 			"label": _("Employee Id"),
 			"fieldtype": "Data",
 			"options": "Employee",
-			"width": 160
+			"width": "140"
 		},
 		{
 			"fieldname": "employeename",
 			"label": _("Employee Name"),
 			"fieldtype": "Data",
-			"width": 120
+			"width": "160"
 		},
 		{
 			"fieldname": "no_of_days_in_month",
 			"label": _("No Of Days In Month"),
 			"fieldtype": "Data",
-			"width": 160
+			"width": "160"
 
 		},
 		{
@@ -79,7 +79,7 @@ def get_columns():
 	]
 	return columns
 def get_data(filters,conditions,month_days,working_days,status_cond):
-	data = frappe.db.sql(f"""Select  DISTINCT employee as employee,
+	data = frappe.db.sql(f"""Select  DISTINCT employee,
 	employee_name as employeename,
 	{month_days} as no_of_days_in_month,
 	{working_days} as total_working_days,
@@ -142,7 +142,7 @@ def get_chart_data(data):
 					"name": "PresentDays",
 					"values": present_days[:30]
 				},
-				
+	
 			]
 		},
 		"type": "bar",

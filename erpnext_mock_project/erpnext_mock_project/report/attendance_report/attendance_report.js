@@ -25,7 +25,7 @@ frappe.query_reports["Attendance Report"] = {
 			"label": __("Employee"),
 			"fieldtype": "Link",
 			"options" : "Employee",
-			"width": "80",
+			"width": "100",
 			"reqd": 0
 		},
 		{

@@ -1,19 +1,24 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2022-10-01 22:35:49.223118",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "employee",
   "amended_from",
   "column_break_3",
   "employee_name",
   "section_break_5",
   "deduction_details",
+  "section_break_8",
   "deduction_calculation",
+  "section_break_10",
   "current_month_balance",
+  "column_break_11",
   "total_balance"
  ],
  "fields": [
@@ -70,11 +75,32 @@
    "fieldname": "total_balance",
    "fieldtype": "Currency",
    "label": "Total Balance"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "ED-.#####\nED-TS-.####",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-06 16:54:56.462709",
+ "modified": "2022-10-12 13:03:52.106528",
  "modified_by": "Administrator",
  "module": "erpnext_mock_project",
  "name": "Employee Deduction",
